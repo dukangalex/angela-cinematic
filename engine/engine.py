@@ -268,7 +268,10 @@ def resolve_typeface(role, fonts_dir=None):
         chosen = mgr.legacyMakeTypeface("", skia.FontStyle.Bold() if role in ("cond", "label", "mono") else skia.FontStyle.Normal())
         desc = f"system default ({chosen.getFamilyName() if chosen else '?'}): install one of {[f for f, _ in FONT_ROLES.get(role, [])][:3]}"
     if not _has_cjk(chosen) and fonts_dir:
-        for other in ("cond", "hand", "serif", "body", "label", "mono"):
+        # hand before cond: cond is a display face whose glyphs for some
+        # common characters (e.g. U+5DF2) are degenerate rectangles that
+        # read as tofu in running text; the hand face is full-coverage.
+        for other in ("hand", "cond", "serif", "body", "label", "mono"):
             for ext in (".ttf", ".otf"):
                 p = pathlib.Path(fonts_dir) / f"{other}{ext}"
                 if p.exists():
