@@ -64,6 +64,10 @@ LOOKS = {
     "studio": dict(board="studio.png", bg=(214, 212, 208), grade=(1.0, 1.0, 1.0), grain=0.012, glow=0.06, vignette=0.32, curve=0.12, dim=(96, 92, 88)),
     # deep blue drafting sheet with a grid (engineering, science, how things work)
     "blueprint": dict(board="blueprint.png", bg=(12, 30, 60), grade=(0.98, 1.0, 1.04), grain=0.02, glow=0.26, vignette=0.6, curve=0.2, dim=(4, 10, 24)),
+    # aged newsprint sheet (fact-checks, news explainers: ink on warm grey stock)
+    "newsprint": dict(board="newsprint.png", bg=(208, 200, 184), grade=(1.01, 1.0, 0.96), grain=0.02, glow=0.1, vignette=0.42, curve=0.18, dim=(88, 80, 70)),
+    # kraft dossier stock (biographies, history, case files: sepia warmth)
+    "archive": dict(board="archive.png", bg=(170, 132, 88), grade=(1.02, 1.0, 0.94), grain=0.03, glow=0.14, vignette=0.55, curve=0.22, dim=(72, 55, 36)),
     # dark navy, high glow (tech, space, night-time stories, trailers)
     "night": dict(board="night.png", bg=(7, 9, 15), grade=(0.97, 1.0, 1.06), grain=0.022, glow=0.32, vignette=0.8, curve=0.3, dim=(2, 3, 8)),
 }

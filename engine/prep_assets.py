@@ -17,8 +17,8 @@ kind:  photo  -> one duotone (or natural colour)
 crop:  optional [left, top, right, bottom] as fractions, to cut to the part that matters
 
 Writes assets/prep/photos/<id>.jpg, assets/prep/photos/meta.json and, if missing, the textures
-cork.png, cork_dark.png, slate.png, charcoal.png, paper.png, studio.png, night.png, blueprint.png
-and relief.png (the boards behind the looks in engine.LOOKS).
+cork.png, cork_dark.png, slate.png, charcoal.png, paper.png, studio.png, night.png, blueprint.png,
+newsprint.png, archive.png and relief.png (the boards behind the looks in engine.LOOKS).
 """
 import argparse
 import json
@@ -141,6 +141,33 @@ def make_blueprint(size=1024):
     return (a + grid[..., None] * np.array([120, 160, 200], np.float32)).clip(0, 255)
 
 
+def make_newsprint(size=1024):
+    """Aged newsprint: warm grey stock, faint column rules every 128 px, fine print noise."""
+    base = np.array([216, 208, 192], np.float32)
+    n = 0.5 * tile_noise(size, 70, 81) + 0.3 * tile_noise(size, 10, 82) + 0.2 * tile_noise(size, 2, 83)
+    img = base[None, None, :] * (1 + n[..., None] * 0.045)
+    for k in range(0, size, 128):                       # column rules, barely there
+        img[:, k:k + 2] *= 0.94
+    for k in range(0, size, 256):                       # fold lines
+        img[k:k + 2, :] *= 0.96
+    return img.clip(0, 255)
+
+
+def make_archive(size=1024):
+    """Kraft dossier stock: tan base, long fibres, soft handling blotches."""
+    base = np.array([178, 140, 94], np.float32)
+    n = 0.5 * tile_noise(size, 46, 91) + 0.3 * tile_noise(size, 9, 92) + 0.35 * tile_noise(size, 3, 93)
+    rng = np.random.default_rng(94)
+    fib = np.zeros((size, size), np.float32)
+    for _ in range(700):                                # long kraft fibres, mostly horizontal
+        x, y = rng.integers(0, size, 2); ang = (rng.random() - 0.5) * 0.6; ln = rng.integers(14, 42)
+        for k in range(ln):
+            fib[int(y + k * math.sin(ang)) % size, int(x + k * math.cos(ang)) % size] += 1
+    fib = np.asarray(Image.fromarray((fib.clip(0, 1) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7)), np.float32) / 255
+    v = n * 0.075 - fib * 0.06
+    return (base[None, None, :] * (1 + v[..., None])).clip(0, 255)
+
+
 def make_relief(size=1024):
     """Faux terrain relief for map land: tileable multi-octave noise, hill-shaded, soft."""
     n = 0.6 * tile_noise(size, 90, 41) + 0.3 * tile_noise(size, 30, 42) + 0.15 * tile_noise(size, 8, 43)
@@ -176,6 +203,10 @@ def textures(prep, force=False):
         made.append(save("night.png", make_flat((16, 20, 32), 61, amount=0.1)))
     if force or not (prep / "blueprint.png").exists():
         made.append(save("blueprint.png", make_blueprint()))
+    if force or not (prep / "newsprint.png").exists():
+        made.append(save("newsprint.png", make_newsprint()))
+    if force or not (prep / "archive.png").exists():
+        made.append(save("archive.png", make_archive()))
     made = [m for m in made if m]
     print("textures:", ", ".join(made) if made else "up to date")
 

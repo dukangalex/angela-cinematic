@@ -17,7 +17,12 @@ Skia 引擎里怎么落地——底面、配色、镜头习惯、文字行为、
 | `map-journey` | 地图之旅 | 古地图上沿路线飞行，站点插旗立卡 |
 | `product` | 产品发布 | 大字由糊到清、霓虹描边、界面斜挂辉光的产品宣传片 |
 | `doodle` | 涂鸦 | 墨水小人儿在同一世界里连续行走，逐词发光字幕，竖屏优先 |
+| `newsprint` | 剪报（自有） | 旧报纸版面逐条核对，墨字、红笔圈划、结论章 |
+| `blueprint` | 蓝图（自有） | 深蓝晒图纸上拆解原理，白线注记、尺寸线、编号读数 |
+| `archive` | 卷宗（自有） | 牛皮纸卷宗翻页，档案照片、骑缝章、深褐墨字 |
 
 预设的来源与致谢见仓库根目录 `CREDITS.md`：`wall` 是引擎原生风格；
-其余 10 种按 motalim-ai/motion-starter-kit 的公开风格说明，
-在本引擎里重新表达为 Skia 口径，未搬用其 Remotion 代码。
+中间 10 种按 motalim-ai/motion-starter-kit 的公开风格说明，
+在本引擎里重新表达为 Skia 口径，未搬用其 Remotion 代码；
+`newsprint`、`blueprint`、`archive` 三种为本仓自有风格（v1.4），
+底纹由 prep_assets 程序化生成，参数包与引擎 look 同名对应。

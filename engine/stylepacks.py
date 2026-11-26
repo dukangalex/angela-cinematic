@@ -1,4 +1,4 @@
-"""The 11 style presets as code: palette, font slots and pacing in one dict,
+"""The 14 style presets as code: palette, font slots and pacing in one dict,
 so choosing a style is an argument, not a document to re-read. The prose
 versions live in styles/*.md and stay the reference for *why*; this module
 is the *what* a scene actually consumes.
@@ -32,6 +32,14 @@ PACKS = {
                         font_display="cond", font_hand="cond", font_body="serif", cam_speed=1.0),
     "doodle":      dict(ink=(26, 24, 22), accent=(240, 110, 60), danger=(220, 50, 60),
                         font_display="hand", font_hand="hand", font_body="hand", cam_speed=1.2),
+    # [angela-cinematic] three house styles added in v1.4; pair each with its
+    # engine look of the same name (Film(look="newsprint") etc.).
+    "newsprint":   dict(ink=(26, 24, 22), accent=(176, 30, 26), danger=(176, 30, 26),
+                        font_display="serif", font_hand="hand", font_body="serif", cam_speed=1.0),
+    "blueprint":   dict(ink=(235, 244, 255), accent=(110, 200, 255), danger=(255, 130, 110),
+                        font_display="cond", font_hand="cond", font_body="mono", cam_speed=0.9),
+    "archive":     dict(ink=(52, 38, 24), accent=(140, 44, 30), danger=(166, 32, 26),
+                        font_display="serif", font_hand="hand", font_body="serif", cam_speed=0.9),
 }
 
 
