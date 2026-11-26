@@ -1,0 +1,11 @@
+本目录字体（中文示例专用）：
+
+cond.ttf — 站酷黄油体 ZCOOL QingKe HuangYou
+  设计：站酷（ZCOOL）字库，刘兵克工作室
+  许可：SIL Open Font License 1.1
+  来源：Google Fonts（ofl/zcoolqingkehuangyou）
+
+hand.ttf — 马善政毛笔体 Ma Shan Zheng
+  设计：Ma Shan Zheng（马善政）
+  许可：SIL Open Font License 1.1
+  来源：Google Fonts（ofl/mashanzheng）

@@ -1,0 +1,118 @@
+{
+ "grade": "bw",
+ "photos": [
+  {
+   "id": "P01",
+   "what": "First flight, Dec 17 1903",
+   "kind": "photo",
+   "commons": "File:First flight2.jpg",
+   "file": "P01_First_flight2.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:First_flight2.jpg",
+   "credit": "John T. Daniels",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "1903-12-17",
+   "license_ok": true
+  },
+  {
+   "id": "P02",
+   "what": "Orville Wright in the Wright Cycle Company shop, 1890s",
+   "kind": "photo",
+   "commons": "File:Orville Wright in a work apron standing behind equipment at the Wright Cycle Company, c. 1890s. (a1895985-1dd8-b71b-0bd7-087631da420f).jpg",
+   "file": "P02_Orville_Wright_in_a_work_apron_standing_behind_e.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Orville_Wright_in_a_work_apron_standing_behind_equipment_at_the_Wright_Cycle_Company,_c._1890s._(a1895985-1dd8-b71b-0bd7-087631da420f).jpg",
+   "credit": "NPS Photo",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "2024-05-14 03:38:43",
+   "license_ok": true
+  },
+  {
+   "id": "P03",
+   "what": "Wilbur Wright, 1905",
+   "kind": "photo",
+   "commons": "File:Wilbur Wright-crop.jpg",
+   "crop": [
+    0.04,
+    0.02,
+    0.96,
+    0.86
+   ],
+   "file": "P03_Wilbur_Wright_crop.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Wilbur_Wright-crop.jpg",
+   "credit": "Orville Wright and Wilbur Wright (credited as photographers) [1], [2]",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "1905",
+   "license_ok": true
+  },
+  {
+   "id": "P04",
+   "what": "Orville Wright, 1905",
+   "kind": "photo",
+   "commons": "File:Orville Wright 1905-crop.jpg",
+   "crop": [
+    0.04,
+    0.02,
+    0.96,
+    0.86
+   ],
+   "file": "P04_Orville_Wright_1905_crop.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Orville_Wright_1905-crop.jpg",
+   "credit": "Orville Wright and Wilbur Wright (credited as photographers) [1], [2]",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "1905",
+   "license_ok": true
+  },
+  {
+   "id": "P05",
+   "what": "Samuel P. Langley",
+   "kind": "photo",
+   "commons": "File:Samuel Pierpont Langley SI-87-17019h original.jpg",
+   "crop": [
+    0.0,
+    0.04,
+    1.0,
+    0.72
+   ],
+   "file": "P05_Samuel_Pierpont_Langley_SI_87_17019h_original.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Samuel_Pierpont_Langley_SI-87-17019h_original.jpg",
+   "credit": "R. H. Lord",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "before 27 February 1906date QS:P571,+1906-02-27T00:00:00Z/7,P1326,+1906-02-27T00:00:00Z/11",
+   "license_ok": true
+  },
+  {
+   "id": "P06",
+   "what": "Langley's Aerodrome A on its houseboat, Oct 7 1903",
+   "kind": "photo",
+   "commons": "File:Attempted Flight of Langley's Full Sized Plane, being readied for Launching, October 7th 1903. (50255040742).jpg",
+   "credit": "Photographer unknown (Commons upload via Flickr user tormentor4555)",
+   "file": "P06_Attempted_Flight_of_Langley_s_Full_Sized_Plane_b.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Attempted_Flight_of_Langley%27s_Full_Sized_Plane,_being_readied_for_Launching,_October_7th_1903._(50255040742).jpg",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "2020-08-22 13:59",
+   "license_ok": true
+  },
+  {
+   "id": "P07",
+   "what": "Orville's telegram to his father, Dec 17 1903",
+   "kind": "doc",
+   "commons": "File:Telegram Orville Wright 17 dec 1903.jpg",
+   "file": "P07_Telegram_Orville_Wright_17_dec_1903.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Telegram_Orville_Wright_17_dec_1903.jpg",
+   "credit": "Orville Wright (1871-1948)",
+   "license": "Public domain",
+   "license_url": "",
+   "date": "17 décembre 1903",
+   "license_ok": true
+  }
+ ],
+ "recreations": [
+  "Wilbur Wright's letter of May 30, 1899 to the Smithsonian: the sentence shown is quoted from the letter; the page is typeset in code.",
+  "New York Times editorial 'Flying Machines Which Do Not Fly', Oct 9, 1903: the quoted sentence is real; the page is typeset in code."
+ ]
+}

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+out/
+audio/takes/
+audio/lines/
+audio/narration.m4a
+audio/timing.json
+audio/segments.json
+assets/prep/
+assets/data/
+.DS_Store
