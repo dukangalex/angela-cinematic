@@ -28,14 +28,17 @@ script.json（台词本）
 ```bash
 pip install -r requirements.txt        # 另需 ffmpeg/ffprobe 在 PATH
 python3 engine/check_setup.py          # 自检（含系统库提示）
-# 英文示例（莱特兄弟，89 秒）
-cp -r examples/wright-en my-film && cd my-film
-python3 ../engine/fetch_commons.py get --project .
-python3 ../engine/make_map.py --project . && python3 ../engine/prep_assets.py --project .
-# 配音：把每 take 的 WAV 放进 audio/takes/（或用 tts_say.py 的草稿声）
-python3 ../engine/split_takes.py --project . && python3 ../engine/build_narration.py --project .
-python3 ../engine/render.py --project . --size 1280x720 --out out/draft.mp4 --audio audio/narration.m4a
+cp -r examples/wright-zh my-film
+# 一键流水线：取图→素材→配音→定时→渲染（scene.py 已随示例附带）
+python3 engine/make_film.py --project my-film --size 1280x720 \
+    --voice zh-CN-YunyangNeural --rate +30%
+python3 engine/contact_sheet.py --project my-film   # 联系表自检
 ```
+
+流水线是分阶段的（make_film.py）：中断后重跑会自动跳过已完成阶段；
+单独跑某一段用 `--from/--to`。配音走 tts_takes.py（正式声线，
+配置见 docs/DEPLOYMENT.md），只要草稿定时声时加 `--scratch`。
+扩展路线见 [docs/ROADMAP.md](docs/ROADMAP.md)。
 
 中文示例在 `examples/wright-zh/`，同题材同结构，
 script 与 scene 已全中文化，字体已随仓附带（见其 README）。
