@@ -66,7 +66,7 @@ def chunks_for(timing, style):
         for i, (w, t) in enumerate(ws):
             cur.append((w, t))
             if len(cur) >= mx or (w[-1] in ".,?!;:。．，、？！；：" and len(cur) >= max(2, mx // 2)) or i == len(ws) - 1:
-                line.append({"words": cur, "t0": cur[0][1]}); cur = []
+                line.append({"words": cur, "t0": cur[0][1], "seg": seg["id"]}); cur = []
         for a, b in zip(line, line[1:]):
             a["t1"] = b["t0"]
         line[-1]["t1"] = seg["end"] + 0.25
@@ -75,8 +75,9 @@ def chunks_for(timing, style):
 
 
 class Captions:
-    def __init__(self, style, width, height, timing, fonts_dir=None):
+    def __init__(self, style, width, height, timing, fonts_dir=None, subs=None):
         self.style, self.W, self.H = style, width, height
+        self.subs = subs or {}
         self.k = width / 1920.0
         self.res = Res(width / 3840.0, None, fonts_dir)
         self.chunks = chunks_for(timing, style)
@@ -150,6 +151,20 @@ class Captions:
             cv.drawString(ln, self.W / 2 - tw / 2, y, self.res.font(f, size), paint((0, 0, 0), 0.85 * a, blur=6 * k))
             cv.restore()
             draw_text(cv, self.res, ln, self.W / 2, y, size, f, (252, 250, 245), a, 0.0, "center")
+        sub = self.subs.get(c.get("seg"))
+        if sub:
+            # Bilingual second line: the segment's full sub text, smaller and
+            # dimmer, under the main caption. [angela-cinematic extension]
+            s2 = size * 0.62
+            tw2 = text_width(self.res, sub, s2, f)
+            if tw2 > self.W * 0.8:
+                s2 *= self.W * 0.8 / tw2
+            ys = y0 + len(lines) * size * 1.25
+            cv.save(); cv.translate(0, 3 * k)
+            tw2 = text_width(self.res, sub, s2, f)
+            cv.drawString(sub, self.W / 2 - tw2 / 2, ys, self.res.font(f, s2), paint((0, 0, 0), 0.85 * a, blur=6 * k))
+            cv.restore()
+            draw_text(cv, self.res, sub, self.W / 2, ys, s2, f, (214, 212, 204), a, 0.0, "center")
 
     def _paper(self, cv, c, t):
         k = self.k; size = 42 * k; f = "mono"

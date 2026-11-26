@@ -236,8 +236,20 @@ class Res:
         return f
 
 
+def _has_cjk(tf):
+    try:
+        return tf is not None and tf.unicharToGlyph(0x4E2D) != 0
+    except Exception:
+        return True  # cannot probe: do not second-guess the caller's choice
+
+
 def resolve_typeface(role, fonts_dir=None):
-    """(typeface, description) for a font role: project override file, then the candidates, then the default."""
+    """(typeface, description) for a font role: project override file, then the candidates, then the default.
+
+    [angela-cinematic] CJK guard: if the winning typeface has no CJK glyphs
+    but the project ships another font file that does, that file serves the
+    role instead. Upstream's Latin-only candidates (Avenir, Montserrat...)
+    turned every Chinese caption in roles like labelm into tofu boxes."""
     if fonts_dir:
         for ext in (".ttf", ".otf"):
             p = pathlib.Path(fonts_dir) / f"{role}{ext}"
@@ -246,12 +258,24 @@ def resolve_typeface(role, fonts_dir=None):
                 if tf:
                     return tf, f"{p.name} (project file)"
     mgr = skia.FontMgr.RefDefault()
+    chosen, desc = None, None
     for fam, weight in FONT_ROLES.get(role, []):
         tf = mgr.matchFamilyStyle(fam, skia.FontStyle(weight, 5, skia.FontStyle.kUpright_Slant))
         if tf is not None and tf.getFamilyName().lower() == fam.lower():
-            return tf, f"{fam} {weight}"
-    tf = mgr.legacyMakeTypeface("", skia.FontStyle.Bold() if role in ("cond", "label", "mono") else skia.FontStyle.Normal())
-    return tf, f"system default ({tf.getFamilyName() if tf else '?'}): install one of {[f for f, _ in FONT_ROLES.get(role, [])][:3]}"
+            chosen, desc = tf, f"{fam} {weight}"
+            break
+    if chosen is None:
+        chosen = mgr.legacyMakeTypeface("", skia.FontStyle.Bold() if role in ("cond", "label", "mono") else skia.FontStyle.Normal())
+        desc = f"system default ({chosen.getFamilyName() if chosen else '?'}): install one of {[f for f, _ in FONT_ROLES.get(role, [])][:3]}"
+    if not _has_cjk(chosen) and fonts_dir:
+        for other in ("cond", "hand", "serif", "body", "label", "mono"):
+            for ext in (".ttf", ".otf"):
+                p = pathlib.Path(fonts_dir) / f"{other}{ext}"
+                if p.exists():
+                    tf = skia.Typeface.MakeFromFile(str(p))
+                    if tf and _has_cjk(tf):
+                        return tf, f"{p.name} (project file; CJK substitute for {role})"
+    return chosen, desc
 
 
 SAMPLING = skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear)

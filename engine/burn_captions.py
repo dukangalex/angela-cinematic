@@ -37,10 +37,10 @@ def probe(video):
 
 
 def worker(args):
-    video, style, f0, f1, fps, w, h, out, crf, timing, fonts = args
+    video, style, f0, f1, fps, w, h, out, crf, timing, fonts, subs = args
     import numpy as np
     from captions import Captions
-    cap = Captions(style, w, h, timing, fonts)
+    cap = Captions(style, w, h, timing, fonts, subs)
     y0 = int(h * 0.74)
     dec = subprocess.Popen(["ffmpeg", "-v", "error", "-ss", f"{f0 / fps:.4f}", "-i", str(video), "-frames:v", str(f1 - f0),
                             "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
@@ -64,16 +64,21 @@ def worker(args):
     return f0, f1, time.time() - t0
 
 
-def srt(timing, out):
+def srt(timing, out, subs=None):
     from captions import chunks_for
     total = timing["total_duration"]
+    subs = subs or {}
 
     def ts(x):
         ms = int(round(x * 1000)); return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
     rows = chunks_for(timing, "clean")
     lines = []
+    seen = set()
     for i, c in enumerate(rows, 1):
-        lines += [str(i), f"{ts(c['t0'])} --> {ts(min(c['t1'], total))}", " ".join(w for w, _ in c["words"]), ""]
+        cue = [str(i), f"{ts(c['t0'])} --> {ts(min(c['t1'], total))}", " ".join(w for w, _ in c["words"])]
+        if c.get("seg") in subs and c["seg"] not in seen:
+            cue.append(subs[c["seg"]]); seen.add(c["seg"])
+        lines += cue + [""]
     pathlib.Path(out).write_text("\n".join(lines))
     print(f"srt: {out} ({len(rows)} cues)")
 
@@ -88,13 +93,23 @@ def main():
     ap.add_argument("--workers", type=int, default=max(1, min(6, (os.cpu_count() or 4) - 1)))
     ap.add_argument("--crf", type=int, default=18)
     ap.add_argument("--srt-only", action="store_true")
+    ap.add_argument("--bilingual", action="store_true",
+                    help="second caption line from each script line's \"sub\" field (clean style)")
     a = ap.parse_args()
     proj = pathlib.Path(a.project).resolve()
     rel = lambda p: p if pathlib.Path(p).is_absolute() else proj / p
     timing = json.loads((proj / "audio" / "timing.json").read_text())
+    subs = None
+    if a.bilingual:
+        script = json.loads((proj / "script.json").read_text())
+        subs = {ln["id"]: ln["sub"] for tk in script["takes"] for ln in tk["lines"] if ln.get("sub")}
+        if not subs:
+            sys.exit("--bilingual: no line in script.json carries a \"sub\" field")
+        if not a.srt_only and a.style != "clean":
+            sys.exit("--bilingual renders in the clean style; pass --style clean")
     out = rel(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     if a.srt_only:
-        srt(timing, out); return
+        srt(timing, out, subs); return
     if not a.video:
         sys.exit("--video is required (or --srt-only)")
     video = rel(a.video)
@@ -105,7 +120,7 @@ def main():
     k = a.workers
     b = [nb * i // k for i in range(k + 1)]
     fonts = str(proj / "fonts")
-    jobs = [(str(video), a.style, b[i], b[i + 1], fps, w, h, work / f"b{i:02d}.mp4", a.crf, timing, fonts) for i in range(k)]
+    jobs = [(str(video), a.style, b[i], b[i + 1], fps, w, h, work / f"b{i:02d}.mp4", a.crf, timing, fonts, subs) for i in range(k)]
     t0 = time.time()
     with mp.get_context("spawn").Pool(k) as pool:
         for f0, f1, dt in pool.imap_unordered(worker, jobs):

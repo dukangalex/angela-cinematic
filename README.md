@@ -38,7 +38,12 @@ python3 engine/contact_sheet.py --project my-film   # 联系表自检
 流水线是分阶段的（make_film.py）：中断后重跑会自动跳过已完成阶段；
 单独跑某一段用 `--from/--to`。配音走 tts_takes.py（正式声线，
 配置见 docs/DEPLOYMENT.md），只要草稿定时声时加 `--scratch`。
-扩展路线见 [docs/ROADMAP.md](docs/ROADMAP.md)。
+取图除 Wikimedia Commons（fetch_commons.py）外还有 Openverse 与
+NASA 素材库（fetch_sources.py），同一套许可证台账。双语字幕：
+script.json 行内写 sub 字段，`burn_captions.py --style clean
+--bilingual` 烧双行字幕。新项目可以直接从 templates/ 复制一套
+主题模板（核实／教程／传记）开工。扩展路线见
+[docs/ROADMAP.md](docs/ROADMAP.md)。
 
 中文示例在 `examples/wright-zh/`，同题材同结构，
 script 与 scene 已全中文化，字体已随仓附带（见其 README）。
