@@ -44,7 +44,10 @@ python3 engine/contact_sheet.py --project my-film   # 联系表自检
 NASA 素材库（fetch_sources.py），同一套许可证台账。双语字幕：
 script.json 行内写 sub 字段，`burn_captions.py --style clean
 --bilingual` 烧双行字幕。新项目可以直接从 templates/ 复制一套
-主题模板（核实／教程／传记）开工。扩展路线见
+主题模板（核实／教程／传记）开工。核实模板带核查语法组件
+（engine/evidence.py：画内时钟、同钟标尺、已知／未知分栏），
+教程模板带图解三件（engine/diagrams.py：步骤图、线条剖面、
+分层爆炸），用法都在各自模板的 README 里。扩展路线见
 [docs/ROADMAP.md](docs/ROADMAP.md)。
 
 中文示例在 `examples/wright-zh/`，同题材同结构，
